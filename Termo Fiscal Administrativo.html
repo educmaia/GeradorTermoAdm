@@ -726,6 +726,8 @@
         position: relative; /* Needed for custom radio button positioning */
         padding-left: 30px; /* Space for custom radio button */
         transition: color 0.3s ease;
+        user-select: none; /* Prevent text selection when clicking label */
+        pointer-events: auto; /* Ensure label itself is clickable */
       }
 
       .question-group label:hover {
@@ -753,6 +755,7 @@
         border-radius: 50%;
         border: 2px solid #ccc;
         transition: all 0.3s ease;
+        pointer-events: auto; /* Ensure pseudo-element is part of clickable area */
       }
 
       /* Custom radio button - inner circle (dot) */
@@ -767,6 +770,7 @@
         border-radius: 50%;
         background-color: white; /* Color of the inner dot */
         transition: transform 0.3s ease;
+        pointer-events: auto; /* Ensure pseudo-element is part of clickable area */
       }
 
       /* Show inner circle and change outer circle color when selected */
@@ -1283,29 +1287,47 @@
           <h2 class="section-title">❓ Perguntas sobre a Execução</h2>
           <div class="question-group">
             <p>Os serviços foram executados conforme o contrato?</p>
-            <label for="pergunta1_sim">
-              <input type="radio" id="pergunta1_sim" name="pergunta1" value="sim"> Sim
+            <label for="servicos_contrato_sim">
+              <input type="radio" id="servicos_contrato_sim" name="servicos_contrato" value="sim"> Sim
             </label>
-            <label for="pergunta1_nao">
-              <input type="radio" id="pergunta1_nao" name="pergunta1" value="nao"> Não
+            <label for="servicos_contrato_nao">
+              <input type="radio" id="servicos_contrato_nao" name="servicos_contrato" value="nao"> Não
             </label>
           </div>
           <div class="question-group">
             <p>Houve alguma intercorrência?</p>
-            <label for="pergunta2_sim">
-              <input type="radio" id="pergunta2_sim" name="pergunta2" value="sim"> Sim
+            <label for="intercorrencia_sim">
+              <input type="radio" id="intercorrencia_sim" name="intercorrencia" value="sim"> Sim
             </label>
-            <label for="pergunta2_nao">
-              <input type="radio" id="pergunta2_nao" name="pergunta2" value="nao"> Não
+            <label for="intercorrencia_nao">
+              <input type="radio" id="intercorrencia_nao" name="intercorrencia" value="nao"> Não
             </label>
           </div>
           <div class="question-group">
             <p>A empresa respondeu prontamente às solicitações?</p>
-            <label for="pergunta3_sim">
-              <input type="radio" id="pergunta3_sim" name="pergunta3" value="sim"> Sim
+            <label for="empresa_solicitacoes_sim">
+              <input type="radio" id="empresa_solicitacoes_sim" name="empresa_solicitacoes" value="sim"> Sim
             </label>
-            <label for="pergunta3_nao">
-              <input type="radio" id="pergunta3_nao" name="pergunta3" value="nao"> Não
+            <label for="empresa_solicitacoes_nao">
+              <input type="radio" id="empresa_solicitacoes_nao" name="empresa_solicitacoes" value="nao"> Não
+            </label>
+          </div>
+          <div class="question-group">
+            <p>Há pendências que podem gerar glosa da nota fiscal?</p>
+            <label for="glosa_pendencias_sim">
+              <input type="radio" id="glosa_pendencias_sim" name="glosa_pendencias" value="sim"> Sim
+            </label>
+            <label for="glosa_pendencias_nao">
+              <input type="radio" id="glosa_pendencias_nao" name="glosa_pendencias" value="nao"> Não
+            </label>
+          </div>
+          <div class="question-group">
+            <p>Há faltas sem reposição que devem ser descontadas do pagamento?</p>
+            <label for="faltas_desconto_sim">
+              <input type="radio" id="faltas_desconto_sim" name="faltas_desconto" value="sim"> Sim
+            </label>
+            <label for="faltas_desconto_nao">
+              <input type="radio" id="faltas_desconto_nao" name="faltas_desconto" value="nao"> Não
             </label>
           </div>
         </div>
