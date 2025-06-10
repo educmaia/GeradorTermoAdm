@@ -1,0 +1,2559 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Termo Circunstanciado - Fiscal Administrativo</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .header {
+        background: linear-gradient(135deg, #2f9e41 0%, #1b5e20 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+        position: relative;
+      }
+
+      /* Estilos para o novo logo e seu fallback */
+      .logo-wrapper {
+        position: absolute;
+        top: 0;
+        left: 120px;
+        bottom: 0;
+        display: flex;
+        align-items: center;
+        z-index: 1;
+      }
+
+      #ifsp-logo-img {
+        height: 100px; /* Altura do logo */
+        opacity: 0.5;
+      }
+
+      #ifsp-logo-text {
+        display: none; /* Oculto por padrão, exibido em caso de erro */
+        font-family: Arial, sans-serif;
+        font-size: 28px;
+        font-weight: bold;
+        color: white;
+        opacity: 0.6;
+      }
+
+      .header-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .header h1 {
+        font-size: 28px;
+        margin-bottom: 10px;
+        font-weight: 300;
+      }
+
+      .header p {
+        opacity: 0.9;
+        font-size: 16px;
+      }
+
+      .form-section {
+        padding: 30px;
+      }
+
+      .section-title {
+        color: #1b5e20;
+        font-size: 20px;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #2f9e41;
+        margin-top: 30px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      /* Ajuste específico para o grid do cabeçalho */
+      #cabecalho-section .form-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+      }
+
+      #cabecalho-section .info-box {
+        width: 100%;
+        margin: 0;
+        padding: 20px;
+      }
+
+      #cabecalho-section .form-group {
+        margin-bottom: 15px;
+      }
+
+      #cabecalho-section .form-group:last-child {
+        margin-bottom: 0;
+      }
+
+      #cabecalho-section input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        border: 2px solid #e1e8ed;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      #cabecalho-section input[type="text"]:focus {
+        outline: none;
+        border-color: #2f9e41;
+        box-shadow: 0 0 0 3px rgba(47, 158, 65, 0.1);
+      }
+
+      #cabecalho-section label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      .form-group {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group label {
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 8px;
+        font-size: 14px;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        padding: 12px;
+        border: 2px solid #e1e8ed;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .form-group select:focus,
+      .form-group textarea:focus {
+        outline: none;
+        border-color: #2f9e41;
+        box-shadow: 0 0 0 3px rgba(47, 158, 65, 0.1);
+      }
+
+      .checkbox-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-top: 10px;
+      }
+
+      .checkbox-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 15px;
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .checkbox-item:hover {
+        background: #e3f2fd;
+        border-color: #1565c0;
+      }
+
+      .checkbox-item input[type="checkbox"] {
+        margin-right: 10px;
+        transform: scale(1.2);
+      }
+
+      .checkbox-item.checked {
+        background: #e3f2fd;
+        border-color: #1565c0;
+        color: #0d47a1;
+        font-weight: 600;
+      }
+
+      .checklist-section {
+        margin-bottom: 30px;
+        display: none;
+        background: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .checklist-section.show {
+        display: block;
+        animation: fadeIn 0.5s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .checklist-category {
+        background: #f8f9fa;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+      }
+
+      .checklist-category:hover {
+        border-color: #2f9e41;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(47, 158, 65, 0.2);
+      }
+
+      .category-title {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 15px;
+        font-size: 18px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      .checklist-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 15px;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        margin-bottom: 12px;
+        border: 1px solid #e9ecef;
+        background: #fff;
+        gap: 15px;
+      }
+
+      .checklist-item:hover {
+        background-color: #f8f9fa;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .checklist-item.pendente {
+        border-color: #dc3545;
+        background-color: #fff5f5;
+      }
+
+      .checklist-item.pendente .item-description {
+        color: #dc3545;
+      }
+
+      .checklist-item.pendente .comment-btn {
+        background: #dc3545;
+      }
+
+      .checklist-item.pendente .comment-btn:hover {
+        background: #c82333;
+      }
+
+      .checklist-controls {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+        padding: 20px;
+        background: #f8f9fa;
+        border-radius: 12px;
+        border: 1px solid #dee2e6;
+        flex-wrap: wrap;
+      }
+
+      .checklist-controls button {
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 160px;
+        justify-content: center;
+      }
+
+      .checklist-controls .btn-add {
+        background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.2);
+      }
+
+      .checklist-controls .btn-add:hover {
+        background: linear-gradient(135deg, #218838 0%, #1c7430 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+      }
+
+      .checklist-controls .btn-remove {
+        background: linear-gradient(135deg, #dc3545 0%, #bd2130 100%);
+        box-shadow: 0 4px 15px rgba(220, 53, 69, 0.2);
+      }
+
+      .checklist-controls .btn-remove:hover {
+        background: linear-gradient(135deg, #c82333 0%, #a71d2a 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3);
+      }
+
+      .checklist-controls .btn-edit {
+        background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%);
+        box-shadow: 0 4px 15px rgba(23, 162, 184, 0.2);
+      }
+
+      .checklist-controls .btn-edit:hover {
+        background: linear-gradient(135deg, #138496 0%, #0f6674 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(23, 162, 184, 0.3);
+      }
+
+      .checklist-item input[type="checkbox"] {
+        margin: 4px 0 0 0;
+        transform: scale(1.3);
+        cursor: pointer;
+      }
+
+      .item-content {
+        flex: 1;
+        min-width: 0;
+        padding-left: 5px;
+      }
+
+      .comment-btn {
+        margin-top: 10px;
+        padding: 8px 15px;
+        background: #6c757d;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .comment-btn:hover {
+        background: #5a6268;
+        transform: translateY(-1px);
+      }
+
+      .comment-btn.active {
+        background: #2f9e41;
+      }
+
+      .comment-btn.active:hover {
+        background: #1b5e20;
+      }
+
+      .item-comment {
+        margin-top: 15px;
+        padding: 15px;
+        background: #f8f9fa;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+        display: none;
+      }
+
+      .item-comment.show {
+        display: block;
+        animation: slideDown 0.3s ease;
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .item-comment h4 {
+        color: #495057;
+        margin-bottom: 10px;
+        font-size: 14px;
+      }
+
+      .item-comment textarea {
+        width: 100%;
+        min-height: 80px;
+        padding: 10px;
+        border: 2px solid #ced4da;
+        border-radius: 6px;
+        font-size: 13px;
+        resize: vertical;
+        font-family: Arial, sans-serif;
+        transition: all 0.3s ease;
+      }
+
+      .item-comment textarea:focus {
+        border-color: #2f9e41;
+        box-shadow: 0 0 0 2px rgba(47, 158, 65, 0.1);
+        outline: none;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+        margin-top: 30px;
+      }
+
+      .btn {
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+        text-align: center;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #2f9e41 0%, #1b5e20 100%);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(47, 158, 65, 0.4);
+      }
+
+      .btn-secondary {
+        background: linear-gradient(135deg, #4caf50 0%, #2e7d32 100%);
+        color: white;
+      }
+
+      .btn-secondary:hover {
+        background: linear-gradient(135deg, #388e3c 0%, #1b5e20 100%);
+        transform: translateY(-2px);
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, #66bb6a 0%, #2e7d32 100%);
+        color: white;
+      }
+
+      .btn-success:hover {
+        background: linear-gradient(135deg, #4caf50 0%, #1b5e20 100%);
+        transform: translateY(-2px);
+      }
+
+      .results {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 25px;
+        margin-top: 30px;
+        border: 2px solid #e9ecef;
+      }
+
+      .report-header {
+        background: #f8f9fa;
+        padding: 15px;
+        border-bottom: 2px solid #dee2e6;
+        margin-bottom: 15px;
+      }
+
+      .header-top {
+        margin-bottom: 12px;
+        border-bottom: 1px solid #dee2e6;
+        padding-bottom: 10px;
+      }
+
+      .header-titles {
+        text-align: center;
+      }
+
+      .header-titles h2 {
+        margin: 0 0 3px 0;
+        color: #333;
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .header-titles h3 {
+        margin: 0;
+        color: #1b5e20;
+        font-size: 18px;
+        font-weight: 600;
+      }
+
+      .company-info-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 15px;
+        font-size: 14px;
+        line-height: 1.4;
+        table-layout: fixed;
+        margin-bottom: 0;
+      }
+
+      .info-box {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 15px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        width: 50%;
+        vertical-align: top;
+        page-break-inside: avoid;
+      }
+
+      .info-box h4 {
+        color: #1b5e20;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 0 0 12px 0;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #e8f5e8;
+      }
+
+      .info-box .info-item {
+        margin-bottom: 8px;
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+      }
+
+      .info-box .info-item:last-child {
+        margin-bottom: 0;
+      }
+
+      .info-box strong {
+        color: #333;
+        font-weight: 600;
+        font-size: 14px;
+        min-width: 100px;
+        flex-shrink: 0;
+      }
+
+      .info-box .info-value {
+        flex: 1;
+        color: #555;
+        font-size: 14px;
+      }
+
+      .summary-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .stat-card {
+        background: white;
+        border: 2px solid #e9ecef;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-number {
+        font-size: 32px;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .stat-label {
+        color: #666;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .stat-ok .stat-number {
+        color: #28a745;
+      }
+      .stat-missing .stat-number {
+        color: #dc3545;
+      }
+      .stat-na .stat-number {
+        color: #17a2b8;
+      }
+      .stat-total .stat-number {
+        color: #6c757d;
+      }
+
+      .comments-section {
+        background: #e8f5e8;
+        border: 2px solid #2f9e41;
+        border-radius: 10px;
+        padding: 20px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+        width: 100%;
+        grid-column: 1 / -1;
+      }
+
+      .comments-section h3 {
+        color: #1b5e20;
+        margin-bottom: 15px;
+        font-size: 18px;
+      }
+
+      .comments-section textarea {
+        width: 100%;
+        min-height: 150px;
+        padding: 15px;
+        border: 2px solid #c8e6c9;
+        border-radius: 8px;
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        resize: vertical;
+        transition: all 0.3s ease;
+      }
+
+      .comments-section textarea:focus {
+        border-color: #2f9e41;
+        box-shadow: 0 0 0 3px rgba(47, 158, 65, 0.1);
+        outline: none;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .download-info {
+        background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+        border: 2px solid #2f9e41;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px;
+        text-align: center;
+      }
+
+      .download-info h3 {
+        color: #1b5e20;
+        margin-bottom: 15px;
+      }
+
+      .download-info p {
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      .checkbox-item {
+        position: relative;
+      }
+
+      .checkbox-item input[type="checkbox"]:checked + .checkbox-label {
+        font-weight: bold;
+        color: #0d47a1;
+      }
+
+      @media (max-width: 768px) {
+        .report-header {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .company-info-table {
+          border-spacing: 10px;
+        }
+
+        .company-info-table tr {
+          display: block;
+        }
+
+        .info-box {
+          display: block;
+          width: 100%;
+          margin-bottom: 15px;
+        }
+
+        .summary-stats {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .checkbox-group {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .checklist-controls {
+          flex-direction: column;
+          padding: 15px;
+        }
+
+        .checklist-controls button {
+          width: 100%;
+          padding: 10px 15px;
+        }
+
+        .checklist-item {
+          flex-direction: row;
+          gap: 10px;
+        }
+
+        .item-content {
+          width: 100%;
+        }
+      }
+
+      @media print {
+        body {
+          background: white;
+          padding: 0;
+        }
+
+        .container {
+          box-shadow: none;
+          border-radius: 0;
+        }
+
+        .form-section,
+        .buttons {
+          display: none;
+        }
+
+        .results {
+          background: white;
+          border: none;
+          page-break-inside: avoid;
+        }
+
+        .report-header {
+          background: white;
+          border-bottom: 2px solid #000;
+          padding: 10px;
+          page-break-inside: avoid;
+        }
+
+        .header-top {
+          margin-bottom: 8px;
+          padding-bottom: 6px;
+        }
+
+        .header-titles h2 {
+          font-size: 20px;
+          margin-bottom: 2px;
+        }
+
+        .header-titles h3 {
+          font-size: 16px;
+        }
+
+        .company-info-table {
+          font-size: 12px;
+          line-height: 1.3;
+          border-spacing: 10px;
+          page-break-inside: avoid;
+        }
+
+        .info-box {
+          padding: 8px;
+          border: 1px solid #000;
+          box-shadow: none;
+          page-break-inside: avoid;
+        }
+
+        .info-box h4 {
+          font-size: 14px;
+          margin-bottom: 6px;
+        }
+
+        .info-box .info-item {
+          margin-bottom: 3px;
+        }
+
+        .info-box strong {
+          font-size: 12px;
+          min-width: 60px;
+        }
+
+        /* Estilos para justificar os textos na impressão */
+        .comments-section div[style*="background: #f8f9fa"] {
+          text-align: justify !important;
+          text-justify: inter-word !important;
+          line-height: 1.5 !important;
+          page-break-inside: avoid !important;
+          orphans: 3 !important;
+          widows: 3 !important;
+        }
+
+        /* Evitar quebras em elementos importantes */
+        .checklist-category {
+          page-break-inside: avoid !important;
+        }
+
+        /* ADICIONE A NOVA REGRA AQUI */
+        .checklist-controls {
+          display: none !important;
+        }
+
+        .checklist-item {
+          page-break-inside: avoid !important;
+        }
+
+        .item-comment {
+          page-break-inside: avoid !important;
+        }
+
+        /* Ajustes para melhor legibilidade */
+        .item-description {
+          text-align: justify !important;
+          text-justify: inter-word !important;
+          line-height: 1.4 !important;
+        }
+
+        /* Evitar quebras em títulos */
+        h2,
+        h3,
+        h4 {
+          page-break-after: avoid !important;
+        }
+
+        /* Ajustes para tabelas */
+        table {
+          page-break-inside: avoid !important;
+        }
+
+        /* Ajustes para listas */
+        ul,
+        ol {
+          page-break-inside: avoid !important;
+        }
+
+        /* Ajustes para parágrafos */
+        p {
+          orphans: 3 !important;
+          widows: 3 !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="download-info">
+      <h3>📁 Como usar este arquivo:</h3>
+      <p>
+        <strong>1.</strong> Salve esta página como
+        "Termo-Circunstanciado-Fiscal.html" no seu computador
+      </p>
+      <p>
+        <strong>2.</strong> Clique duas vezes no arquivo para abrir no navegador
+      </p>
+      <p><strong>3.</strong> Funciona offline - não precisa de internet!</p>
+      <p><strong>4.</strong> Compatível com Chrome, Firefox, Edge e Safari</p>
+      <p><strong>5.</strong> Ao salvar o pdf, salve da página 2 em diante.</p>
+      <p>
+        <strong>5.</strong> Desenvolvido por Eduardo Camargo Maia -
+        Administrador - CLT - IFSP Campus Capivari.
+      </p>
+      <p><strong>6. Sugestões:</strong> educmaia@gmail.com</p>
+    </div>
+
+    <div class="container">
+      <div class="header">
+        <div class="logo-wrapper">
+          <img
+            src="https://i.ibb.co/tTTHG3X8/logo.png"
+            alt="logo"
+            id="ifsp-logo-img"
+            style="border: 0"
+            onerror="this.style.display='none'; document.getElementById('ifsp-logo-text').style.display='block';"
+          />
+          <div id="ifsp-logo-text">IFSP</div>
+        </div>
+        <div class="header-content">
+          <h1>Termo Circunstanciado - Fiscal Administrativo</h1>
+          <p>Instituto Federal de São Paulo - Campus Capivari</p>
+        </div>
+      </div>
+
+      <div class="form-section" id="cabecalho-section">
+        <h2 class="section-title">Dados do Cabeçalho</h2>
+        <div class="form-grid">
+          <div class="info-box">
+            <h4>📋 INFORMAÇÕES DO CONTRATO</h4>
+            <div class="form-group">
+              <label for="orgao">🏢 Órgão:</label>
+              <input
+                type="text"
+                id="orgao"
+                value="Instituto Federal de Educação, Ciência e Tecnologia de São Paulo"
+              />
+            </div>
+            <div class="form-group">
+              <label for="unidade">🏫 Unidade:</label>
+              <input type="text" id="unidade" value="Campus Capivari" />
+            </div>
+            <div class="form-group">
+              <label for="local">📍 Local:</label>
+              <input
+                type="text"
+                id="local"
+                value="Unidade Josefina Giovana Rossi"
+              />
+            </div>
+            <div class="form-group">
+              <label for="servico">📋 Serviço:</label>
+              <input
+                type="text"
+                id="servico"
+                value="Vigia/Controle de Acesso"
+              />
+            </div>
+            <div class="form-group">
+              <label for="contrato">📄 Contrato:</label>
+              <input type="text" id="contrato" value="08.712/2025" />
+            </div>
+            <div class="form-group">
+              <label for="avaliacao">📊 Avaliação:</label>
+              <input
+                type="text"
+                id="avaliacao"
+                value="Termo Circunstanciado - Fiscal Administrativo"
+              />
+            </div>
+          </div>
+
+          <div class="info-box">
+            <h4>🏭 DADOS DA EXECUÇÃO</h4>
+            <div class="form-group">
+              <label for="empresa">🏭 Empresa:</label>
+              <input
+                type="text"
+                id="empresa"
+                value="ORBITAL INFRAESTRUTURA E FACILITES LTDA"
+              />
+            </div>
+            <div class="form-group">
+              <label for="cnpj">🆔 CNPJ:</label>
+              <input type="text" id="cnpj" value="23.791.746/0001-66" />
+            </div>
+            <div class="form-group">
+              <label for="periodo">📅 Período:</label>
+              <input type="text" id="periodo" value="Junho/2025" />
+            </div>
+            <div class="form-group">
+              <label for="fiscal-cabecalho">👤 Fiscal:</label>
+              <input
+                type="text"
+                id="fiscal-cabecalho"
+                value="Eduardo Camargo Maia"
+              />
+            </div>
+            <div class="form-group">
+              <label for="data-cabecalho">📆 Data:</label>
+              <input type="text" id="data-cabecalho" value="09/06/2025" />
+            </div>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button class="btn btn-primary" onclick="salvarDadosCabecalho()">
+            Salvar Dados do Cabeçalho
+          </button>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2 class="section-title">Dados do Período de Verificação</h2>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="mes">Mês de Referência:</label>
+            <select id="mes" required>
+              <option value="">Selecione o mês</option>
+              <option value="Janeiro">Janeiro</option>
+              <option value="Fevereiro">Fevereiro</option>
+              <option value="Março">Março</option>
+              <option value="Abril">Abril</option>
+              <option value="Maio">Maio</option>
+              <option value="Junho">Junho</option>
+              <option value="Julho">Julho</option>
+              <option value="Agosto">Agosto</option>
+              <option value="Setembro">Setembro</option>
+              <option value="Outubro">Outubro</option>
+              <option value="Novembro">Novembro</option>
+              <option value="Dezembro">Dezembro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ano">Ano:</label>
+            <input
+              type="number"
+              id="ano"
+              min="2024"
+              max="2030"
+              value="2025"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="fiscal">Fiscal Responsável:</label>
+            <input
+              type="text"
+              id="fiscal"
+              value="Eduardo Camargo Maia"
+              placeholder="Nome do fiscal do contrato"
+              required
+            />
+          </div>
+        </div>
+
+        <h2 class="section-title">Tipos de Verificação</h2>
+        <div class="form-group">
+          <label
+            >Selecione os tipos de verificação que se aplicam ao período:</label
+          >
+          <div class="checkbox-group">
+            <div class="checkbox-item">
+              <input type="checkbox" id="primeiro-mes" />
+              <label for="primeiro-mes" class="checkbox-label"
+                >📋 Primeiro Mês de Prestação</label
+              >
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="verificacao-mensal" checked />
+              <label for="verificacao-mensal" class="checkbox-label"
+                >📅 Verificação Mensal</label
+              >
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="nova-contratacao" />
+              <label for="nova-contratacao" class="checkbox-label"
+                >👥 Nova Contratação de Funcionários</label
+              >
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="desligamento" />
+              <label for="desligamento" class="checkbox-label"
+                >🚪 Desligamento de Funcionários</label
+              >
+            </div>
+            <div class="checkbox-item">
+              <input type="checkbox" id="ferias" />
+              <label for="ferias" class="checkbox-label"
+                >🏖️ Férias de Funcionários</label
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="comments-section">
+          <h3>💬 Resumo das Anotações do Fiscal Técnico</h3>
+          <textarea
+            id="observacoes-tecnicas"
+            placeholder="Digite aqui as anotações do Fiscal Técnico sobre a verificação realizada, contexto da verificação, situações especiais encontradas ou qualquer informação relevante..."
+          ></textarea>
+        </div>
+
+        <div class="comments-section">
+          <h3>💬 Anotações do Fiscal Administrativo</h3>
+          <textarea
+            id="observacoes-gerais"
+            placeholder="Digite aqui suas anotações sobre a verificação realizada, contexto da verificação, situações especiais encontradas ou qualquer informação relevante..."
+          ></textarea>
+        </div>
+
+        <h2 class="section-title">Checklist de Verificação Documental</h2>
+
+        <div id="section-primeiro-mes" class="checklist-section">
+          <div class="checklist-category">
+            <div class="category-title">
+              📋 Documentação Necessária no Primeiro Mês ou Nova Contratação
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc1_1"
+                name="primeiro_mes"
+                data-item="1"
+              />
+              <div class="item-content">
+                <div class="item-number">1.</div>
+                <div class="item-description">
+                  Relação dos empregados com nome completo, cargo, função,
+                  horário do posto, RG, CPF, indicação dos responsáveis técnicos
+                  pela execução dos serviços
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc1_1')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc1_1" class="item-comment">
+              <h4>💬 Comentário - Item 1</h4>
+              <textarea
+                id="comentario_doc1_1"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc1_2"
+                name="primeiro_mes"
+                data-item="2"
+              />
+              <div class="item-content">
+                <div class="item-number">2.</div>
+                <div class="item-description">
+                  Carteiras de trabalho dos empregados e responsáveis
+                  devidamente assinada pela contratada
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc1_2')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc1_2" class="item-comment">
+              <h4>💬 Comentário - Item 2</h4>
+              <textarea
+                id="comentario_doc1_2"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc1_3"
+                name="primeiro_mes"
+                data-item="3"
+              />
+              <div class="item-content">
+                <div class="item-number">3.</div>
+                <div class="item-description">
+                  Exames médicos admissionais dos empregados da contratada
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc1_3')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc1_3" class="item-comment">
+              <h4>💬 Comentário - Item 3</h4>
+              <textarea
+                id="comentario_doc1_3"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc1_4"
+                name="primeiro_mes"
+                data-item="4"
+              />
+              <div class="item-content">
+                <div class="item-number">4.</div>
+                <div class="item-description">
+                  Declaração de responsabilidade exclusiva da contratada sobre a
+                  quitação dos encargos trabalhistas e sociais
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc1_4')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc1_4" class="item-comment">
+              <h4>💬 Comentário - Item 4</h4>
+              <textarea
+                id="comentario_doc1_4"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc1_5"
+                name="primeiro_mes"
+                data-item="5"
+              />
+              <div class="item-content">
+                <div class="item-number">5.</div>
+                <div class="item-description">
+                  Comprovantes de entregas de uniformes e equipamentos aos
+                  funcionários terceirizados (caso aplicável – verificar se foi
+                  exigido no Termo de Referência)
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc1_5')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc1_5" class="item-comment">
+              <h4>💬 Comentário - Item 5</h4>
+              <textarea
+                id="comentario_doc1_5"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc1_6"
+                name="primeiro_mes"
+                data-item="6"
+              />
+              <div class="item-content">
+                <div class="item-number">6.</div>
+                <div class="item-description">
+                  Holerite do mês (necessário para cálculo do depósito em
+                  garantia) não é necessário o envio dos comprovantes de
+                  pagamento apenas o holerite
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc1_6')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc1_6" class="item-comment">
+              <h4>💬 Comentário - Item 6</h4>
+              <textarea
+                id="comentario_doc1_6"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div id="section-mensal" class="checklist-section show">
+          <div class="checklist-category">
+            <div class="category-title">
+              📅 Documentação Necessária em Todos os Meses
+            </div>
+
+            <div class="checklist-item">
+              <input type="checkbox" id="doc2_1" name="mensal" data-item="1" />
+              <div class="item-content">
+                <div class="item-number">1.</div>
+                <div class="item-description">
+                  Contracheque de pagamento do salário assinado pelo(a)
+                  funcionário(a) ou recibo de depósito bancário do mês anterior
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_1')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_1" class="item-comment">
+              <h4>💬 Comentário - Item 1</h4>
+              <textarea
+                id="comentario_doc2_1"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input type="checkbox" id="doc2_2" name="mensal" data-item="2" />
+              <div class="item-content">
+                <div class="item-number">2.</div>
+                <div class="item-description">
+                  Folha de pagamento analítica do mês anterior
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_2')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_2" class="item-comment">
+              <h4>💬 Comentário - Item 2</h4>
+              <textarea
+                id="comentario_doc2_2"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input type="checkbox" id="doc2_3" name="mensal" data-item="3" />
+              <div class="item-content">
+                <div class="item-number">3.</div>
+                <div class="item-description">
+                  Folha de pagamento analítica do mês atual para cálculo do
+                  depósito em garantia
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_3')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_3" class="item-comment">
+              <h4>💬 Comentário - Item 3</h4>
+              <textarea
+                id="comentario_doc2_3"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input type="checkbox" id="doc2_4" name="mensal" data-item="4" />
+              <div class="item-content">
+                <div class="item-number">4.</div>
+                <div class="item-description">
+                  Comprovante de entrega de vale refeição (caso aplicável) do
+                  mês anterior
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_4')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_4" class="item-comment">
+              <h4>💬 Comentário - Item 4</h4>
+              <textarea
+                id="comentario_doc2_4"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input type="checkbox" id="doc2_5" name="mensal" data-item="5" />
+              <div class="item-content">
+                <div class="item-number">5.</div>
+                <div class="item-description">
+                  Comprovante de entrega de vale alimentação (caso aplicável)
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_5')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_5" class="item-comment">
+              <h4>💬 Comentário - Item 5</h4>
+              <textarea
+                id="comentario_doc2_5"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input type="checkbox" id="doc2_6" name="mensal" data-item="6" />
+              <div class="item-content">
+                <div class="item-number">6.</div>
+                <div class="item-description">
+                  Comprovante de pagamento de cesta básica (caso aplicável)
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_6')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_6" class="item-comment">
+              <h4>💬 Comentário - Item 6</h4>
+              <textarea
+                id="comentario_doc2_6"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input type="checkbox" id="doc2_7" name="mensal" data-item="7" />
+              <div class="item-content">
+                <div class="item-number">7.</div>
+                <div class="item-description">
+                  Comprovante de pagamento do vale transporte (caso aplicável)
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_7')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_7" class="item-comment">
+              <h4>💬 Comentário - Item 7</h4>
+              <textarea
+                id="comentario_doc2_7"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input type="checkbox" id="doc2_8" name="mensal" data-item="8" />
+              <div class="item-content">
+                <div class="item-number">8.</div>
+                <div class="item-description">
+                  Relatório de horas trabalhadas/folha de ponto DIGITAL
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_8')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_8" class="item-comment">
+              <h4>💬 Comentário - Item 8</h4>
+              <textarea
+                id="comentario_doc2_8"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input type="checkbox" id="doc2_9" name="mensal" data-item="9" />
+              <div class="item-content">
+                <div class="item-number">9.</div>
+                <div class="item-description">
+                  Guia de recolhimento de FGTS-GRF
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_9')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_9" class="item-comment">
+              <h4>💬 Comentário - Item 9</h4>
+              <textarea
+                id="comentario_doc2_9"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc2_10"
+                name="mensal"
+                data-item="10"
+              />
+              <div class="item-content">
+                <div class="item-number">10.</div>
+                <div class="item-description">
+                  Guia de recolhimento da previdência social - GPS
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_10')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_10" class="item-comment">
+              <h4>💬 Comentário - Item 10</h4>
+              <textarea
+                id="comentario_doc2_10"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc2_11"
+                name="mensal"
+                data-item="11"
+              />
+              <div class="item-content">
+                <div class="item-number">11.</div>
+                <div class="item-description">Guia de recolhimento-GFIP</div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_11')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_11" class="item-comment">
+              <h4>💬 Comentário - Item 11</h4>
+              <textarea
+                id="comentario_doc2_11"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc2_12"
+                name="mensal"
+                data-item="12"
+              />
+              <div class="item-content">
+                <div class="item-number">12.</div>
+                <div class="item-description">
+                  Benefícios suplementares conforme Convenção Coletiva de
+                  Trabalho (caso aplicável)
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_12')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_12" class="item-comment">
+              <h4>💬 Comentário - Item 12</h4>
+              <textarea
+                id="comentario_doc2_12"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc2_13"
+                name="mensal"
+                data-item="13"
+              />
+              <div class="item-content">
+                <div class="item-number">13.</div>
+                <div class="item-description">
+                  Sicaf, CND, Certidão Estadual, Certidão Municipal, CRF (FGTS),
+                  CNDT
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_13')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_13" class="item-comment">
+              <h4>💬 Comentário - Item 13</h4>
+              <textarea
+                id="comentario_doc2_13"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc2_14"
+                name="mensal"
+                data-item="14"
+              />
+              <div class="item-content">
+                <div class="item-number">14.</div>
+                <div class="item-description">
+                  Protocolo de envio de arquivos à Conectividade Social
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_14')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_14" class="item-comment">
+              <h4>💬 Comentário - Item 14</h4>
+              <textarea
+                id="comentario_doc2_14"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc2_15"
+                name="mensal"
+                data-item="15"
+              />
+              <div class="item-content">
+                <div class="item-number">15.</div>
+                <div class="item-description">
+                  Plano de Férias dos funcionários
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc2_15')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc2_15" class="item-comment">
+              <h4>💬 Comentário - Item 15</h4>
+              <textarea
+                id="comentario_doc2_15"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div id="section-desligamento" class="checklist-section">
+          <div class="checklist-category">
+            <div class="category-title">
+              🚪 Documentação Necessária em Caso de Desligamento de Funcionários
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc3_1"
+                name="desligamento"
+                data-item="1"
+              />
+              <div class="item-content">
+                <div class="item-number">1.</div>
+                <div class="item-description">
+                  Termos de rescisão dos contratos de trabalho dos empregados
+                  devidamente homologados
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc3_1')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc3_1" class="item-comment">
+              <h4>💬 Comentário - Item 1</h4>
+              <textarea
+                id="comentario_doc3_1"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc3_2"
+                name="desligamento"
+                data-item="2"
+              />
+              <div class="item-content">
+                <div class="item-number">2.</div>
+                <div class="item-description">
+                  Guias de recolhimento da contribuição previdenciária e do FGTS
+                  referentes às rescisões
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc3_2')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc3_2" class="item-comment">
+              <h4>💬 Comentário - Item 2</h4>
+              <textarea
+                id="comentario_doc3_2"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc3_3"
+                name="desligamento"
+                data-item="3"
+              />
+              <div class="item-content">
+                <div class="item-number">3.</div>
+                <div class="item-description">
+                  Extratos dos depósitos efetuados nas contas vinculadas
+                  individuais do FGTS de cada empregado dispensado
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc3_3')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc3_3" class="item-comment">
+              <h4>💬 Comentário - Item 3</h4>
+              <textarea
+                id="comentario_doc3_3"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input
+                type="checkbox"
+                id="doc3_4"
+                name="desligamento"
+                data-item="4"
+              />
+              <div class="item-content">
+                <div class="item-number">4.</div>
+                <div class="item-description">Exames médicos demissionais</div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc3_4')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc3_4" class="item-comment">
+              <h4>💬 Comentário - Item 4</h4>
+              <textarea
+                id="comentario_doc3_4"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div id="section-ferias" class="checklist-section">
+          <div class="checklist-category">
+            <div class="category-title">
+              🏖️ Documentação Necessária em Caso de Férias de Funcionários
+            </div>
+
+            <div class="checklist-item">
+              <input type="checkbox" id="doc4_1" name="ferias" data-item="1" />
+              <div class="item-content">
+                <div class="item-number">1.</div>
+                <div class="item-description">
+                  Recibo de férias e aviso de férias devidamente assinados
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc4_1')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc4_1" class="item-comment">
+              <h4>💬 Comentário - Item 1</h4>
+              <textarea
+                id="comentario_doc4_1"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+
+            <div class="checklist-item">
+              <input type="checkbox" id="doc4_2" name="ferias" data-item="2" />
+              <div class="item-content">
+                <div class="item-number">2.</div>
+                <div class="item-description">
+                  Documentação do funcionário que irá substituir o funcionário
+                  que está saindo de férias (mesma documentação da tabela
+                  "Documentação necessária no primeiro mês de prestação dos
+                  serviços ou em caso de nova contratação de funcionários")
+                </div>
+                <button
+                  type="button"
+                  class="comment-btn"
+                  onclick="toggleItemComment('doc4_2')"
+                >
+                  💬 Adicionar Comentário
+                </button>
+              </div>
+            </div>
+            <div id="comment_doc4_2" class="item-comment">
+              <h4>💬 Comentário - Item 2</h4>
+              <textarea
+                id="comentario_doc4_2"
+                placeholder="Digite suas observações sobre este item..."
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <button class="btn btn-primary" onclick="gerarRelatorio()">
+            Gerar Relatório
+          </button>
+          <button class="btn btn-secondary" onclick="limparFormulario()">
+            Limpar Formulário
+          </button>
+        </div>
+      </div>
+
+      <div id="resultado" class="results hidden">
+        <div class="report-header">
+          <div class="header-top">
+            <div class="header-titles">
+              <h2>Termo Circunstanciado - Fiscal Administrativo</h2>
+              <h3>Instituto Federal de São Paulo - Campus Capivari</h3>
+            </div>
+          </div>
+
+          <table class="company-info-table">
+            <tr>
+              <td class="info-box">
+                <h4>📋 INFORMAÇÕES DO CONTRATO</h4>
+                <div class="info-item">
+                  <strong>🏢 Órgão:</strong>
+                  <span class="info-value"
+                    >Instituto Federal de Educação, Ciência e Tecnologia de São
+                    Paulo</span
+                  >
+                </div>
+                <div class="info-item">
+                  <strong>🏫 Unidade:</strong>
+                  <span class="info-value">Campus Capivari</span>
+                </div>
+                <div class="info-item">
+                  <strong>📍 Local:</strong>
+                  <span class="info-value">Unidade Josefina Giovana Rossi</span>
+                </div>
+                <div class="info-item">
+                  <strong>📋 Serviço:</strong>
+                  <span class="info-value">Vigia/Controle de Acesso</span>
+                </div>
+                <div class="info-item">
+                  <strong>📄 Contrato:</strong>
+                  <span class="info-value">08.712/2025</span>
+                </div>
+                <div class="info-item">
+                  <strong>📊 Avaliação:</strong>
+                  <span class="info-value"
+                    >Termo Circunstanciado - Fiscal Administrativo</span
+                  >
+                </div>
+              </td>
+
+              <td class="info-box">
+                <h4>🏭 DADOS DA EXECUÇÃO</h4>
+                <div class="info-item">
+                  <strong>🏭 Empresa:</strong>
+                  <span class="info-value"
+                    >ORBITAL INFRAESTRUTURA E FACILITES LTDA</span
+                  >
+                </div>
+                <div class="info-item">
+                  <strong>🆔 CNPJ:</strong>
+                  <span class="info-value">23.791.746/0001-66</span>
+                </div>
+                <div class="info-item">
+                  <strong>📅 Período:</strong>
+                  <span class="info-value" id="periodo-referencia"></span>
+                </div>
+                <div class="info-item">
+                  <strong>👤 Fiscal:</strong>
+                  <span class="info-value" id="fiscal-resultado"></span>
+                </div>
+                <div class="info-item">
+                  <strong>📆 Data:</strong>
+                  <span class="info-value" id="data-avaliacao"></span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div id="conteudo-relatorio"></div>
+
+        <div class="buttons">
+          <button class="btn btn-success" onclick="imprimirRelatorio()">
+            Imprimir Relatório
+          </button>
+          <button class="btn btn-secondary" onclick="voltarFormulario()">
+            Nova Verificação
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Função para gerar o relatório
+      function gerarRelatorio() {
+        if (!validateForm()) return;
+
+        // Carregar dados do cabeçalho do localStorage
+        const dadosSalvos = JSON.parse(
+          localStorage.getItem("dadosCabecalho") || "{}"
+        );
+
+        // Atualizar cabeçalho do relatório
+        const reportHeader = document.querySelector(".report-header");
+        reportHeader.innerHTML = `
+        <div class="header-top">
+          <div class="header-titles">
+            <h2>${
+              dadosSalvos.avaliacao ||
+              "Termo Circunstanciado - Fiscal Administrativo"
+            }</h2>
+            <h3>${dadosSalvos.orgao || "Instituto Federal de São Paulo"} - ${
+          dadosSalvos.unidade || "Campus Capivari"
+        }</h3>
+          </div>
+        </div>
+
+        <table class="company-info-table">
+          <tr>
+            <td class="info-box">
+              <h4>📋 INFORMAÇÕES DO CONTRATO</h4>
+              <div class="info-item">
+                <strong>🏢 Órgão:</strong>
+                <span class="info-value">${
+                  dadosSalvos.orgao ||
+                  "Instituto Federal de Educação, Ciência e Tecnologia de São Paulo"
+                }</span>
+              </div>
+              <div class="info-item">
+                <strong>🏫 Unidade:</strong>
+                <span class="info-value">${
+                  dadosSalvos.unidade || "Campus Capivari"
+                }</span>
+              </div>
+              <div class="info-item">
+                <strong>📍 Local:</strong>
+                <span class="info-value">${
+                  dadosSalvos.local || "Unidade Josefina Giovana Rossi"
+                }</span>
+              </div>
+              <div class="info-item">
+                <strong>📋 Serviço:</strong>
+                <span class="info-value">${
+                  dadosSalvos.servico || "Vigia/Controle de Acesso"
+                }</span>
+              </div>
+              <div class="info-item">
+                <strong>📄 Contrato:</strong>
+                <span class="info-value">${
+                  dadosSalvos.contrato || "08.712/2025"
+                }</span>
+              </div>
+              <div class="info-item">
+                <strong>📊 Avaliação:</strong>
+                <span class="info-value">${
+                  dadosSalvos.avaliacao ||
+                  "Termo Circunstanciado - Fiscal Administrativo"
+                }</span>
+              </div>
+            </td>
+
+            <td class="info-box">
+              <h4>🏭 DADOS DA EXECUÇÃO</h4>
+              <div class="info-item">
+                <strong>🏭 Empresa:</strong>
+                <span class="info-value">${
+                  dadosSalvos.empresa ||
+                  "ORBITAL INFRAESTRUTURA E FACILITES LTDA"
+                }</span>
+              </div>
+              <div class="info-item">
+                <strong>🆔 CNPJ:</strong>
+                <span class="info-value">${
+                  dadosSalvos.cnpj || "23.791.746/0001-66"
+                }</span>
+              </div>
+              <div class="info-item">
+                <strong>📅 Período:</strong>
+                <span class="info-value">${
+                  dadosSalvos.periodo ||
+                  document.getElementById("mes").value +
+                    "/" +
+                    document.getElementById("ano").value
+                }</span>
+              </div>
+              <div class="info-item">
+                <strong>👤 Fiscal:</strong>
+                <span class="info-value">${
+                  dadosSalvos.fiscal || document.getElementById("fiscal").value
+                }</span>
+              </div>
+              <div class="info-item">
+                <strong>📆 Data:</strong>
+                <span class="info-value">${
+                  dadosSalvos.data || new Date().toLocaleDateString("pt-BR")
+                }</span>
+              </div>
+            </td>
+          </tr>
+        </table>
+      `;
+
+        // Gerar conteúdo do relatório
+        const conteudoRelatorio = document.getElementById("conteudo-relatorio");
+        conteudoRelatorio.innerHTML = "";
+
+        // Adicionar seções selecionadas
+        if (
+          document.getElementById("primeiro-mes").checked ||
+          document.getElementById("nova-contratacao").checked
+        ) {
+          conteudoRelatorio.appendChild(
+            document.getElementById("section-primeiro-mes").cloneNode(true)
+          );
+        }
+        if (document.getElementById("verificacao-mensal").checked) {
+          conteudoRelatorio.appendChild(
+            document.getElementById("section-mensal").cloneNode(true)
+          );
+        }
+        if (document.getElementById("desligamento").checked) {
+          conteudoRelatorio.appendChild(
+            document.getElementById("section-desligamento").cloneNode(true)
+          );
+        }
+        if (document.getElementById("ferias").checked) {
+          conteudoRelatorio.appendChild(
+            document.getElementById("section-ferias").cloneNode(true)
+          );
+        }
+
+        // Adicionar observações
+        const observacoesTecnicas = document.getElementById(
+          "observacoes-tecnicas"
+        ).value;
+        const observacoesGerais =
+          document.getElementById("observacoes-gerais").value;
+
+        if (observacoesTecnicas || observacoesGerais) {
+          const observacoesDiv = document.createElement("div");
+          observacoesDiv.className = "comments-section";
+          observacoesDiv.innerHTML = `
+            ${
+              observacoesTecnicas
+                ? `
+              <h3>💬 Resumo das Anotações do Fiscal Técnico</h3>
+              <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; text-align: justify; text-justify: inter-word; line-height: 1.5;">
+                ${observacoesTecnicas.replace(/\n/g, "<br>")}
+              </div>
+            `
+                : ""
+            }
+            ${
+              observacoesGerais
+                ? `
+              <h3>💬 Anotações do Fiscal Administrativo</h3>
+              <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; text-align: justify; text-justify: inter-word; line-height: 1.5;">
+                ${observacoesGerais.replace(/\n/g, "<br>")}
+              </div>
+            `
+                : ""
+            }
+          `;
+          conteudoRelatorio.appendChild(observacoesDiv);
+        }
+
+        // Mostrar resultado e esconder formulário
+        document.querySelector(".form-section").classList.add("hidden");
+        document.getElementById("resultado").classList.remove("hidden");
+      }
+
+      // Função para voltar ao formulário
+      function voltarFormulario() {
+        document.querySelector(".form-section").classList.remove("hidden");
+        document.getElementById("resultado").classList.add("hidden");
+      }
+
+      // Função para imprimir o relatório
+      function imprimirRelatorio() {
+        window.print();
+      }
+
+      // Função para limpar o formulário
+      function limparFormulario() {
+        if (confirm("Deseja realmente limpar todos os dados do formulário?")) {
+          document
+            .querySelectorAll("input, select, textarea")
+            .forEach((input) => {
+              if (input.type === "checkbox") {
+                input.checked = input.id === "verificacao-mensal";
+              } else if (input.type === "text" || input.type === "textarea") {
+                input.value = "";
+              } else if (input.id === "ano") {
+                input.value = "2025";
+              } else if (input.id === "fiscal") {
+                input.value = "Eduardo Camargo Maia";
+              }
+            });
+
+          // Fechar todas as caixas de comentários
+          document.querySelectorAll(".item-comment").forEach((comment) => {
+            comment.classList.remove("show");
+          });
+
+          // Resetar botões de comentário
+          document.querySelectorAll(".comment-btn").forEach((btn) => {
+            btn.textContent = "💬 Adicionar Comentário";
+            btn.classList.remove("active");
+          });
+        }
+      }
+
+      // Função para validar o formulário
+      function validateForm() {
+        const mes = document.getElementById("mes").value;
+        const ano = document.getElementById("ano").value;
+        const fiscal = document.getElementById("fiscal").value;
+
+        if (!mes || !ano || !fiscal) {
+          alert("Por favor, preencha todos os campos obrigatórios.");
+          return false;
+        }
+
+        return true;
+      }
+
+      // Função para definir o mês atual automaticamente
+      function definirMesAtual() {
+        const agora = new Date();
+        const mesAtual = agora.getMonth();
+        const meses = [
+          "Janeiro",
+          "Fevereiro",
+          "Março",
+          "Abril",
+          "Maio",
+          "Junho",
+          "Julho",
+          "Agosto",
+          "Setembro",
+          "Outubro",
+          "Novembro",
+          "Dezembro",
+        ];
+
+        const mesSelect = document.getElementById("mes");
+        mesSelect.value = meses[mesAtual];
+      }
+
+      // Executar quando a página carregar
+      document.addEventListener("DOMContentLoaded", function () {
+        definirMesAtual();
+      });
+
+      // Função para alternar a visibilidade dos comentários
+      function toggleItemComment(itemId) {
+        const commentDiv = document.getElementById(`comment_${itemId}`);
+        const button = document.querySelector(
+          `[onclick="toggleItemComment('${itemId}')"]`
+        );
+
+        if (commentDiv.classList.contains("show")) {
+          commentDiv.classList.remove("show");
+          button.classList.remove("active");
+          button.textContent = "💬 Adicionar Comentário";
+        } else {
+          commentDiv.classList.add("show");
+          button.classList.add("active");
+          button.textContent = "💬 Ocultar Comentário";
+        }
+      }
+
+      // Função para mostrar/ocultar seções baseado nos checkboxes
+      function toggleSections() {
+        const primeiroMes = document.getElementById("primeiro-mes").checked;
+        const verificacaoMensal =
+          document.getElementById("verificacao-mensal").checked;
+        const novaContratacao =
+          document.getElementById("nova-contratacao").checked;
+        const desligamento = document.getElementById("desligamento").checked;
+        const ferias = document.getElementById("ferias").checked;
+
+        document.getElementById("section-primeiro-mes").style.display =
+          primeiroMes || novaContratacao ? "block" : "none";
+        document.getElementById("section-mensal").style.display =
+          verificacaoMensal ? "block" : "none";
+        document.getElementById("section-desligamento").style.display =
+          desligamento ? "block" : "none";
+        document.getElementById("section-ferias").style.display = ferias
+          ? "block"
+          : "none";
+      }
+
+      // Adicionar event listeners aos checkboxes
+      document
+        .querySelectorAll('.checkbox-item input[type="checkbox"]')
+        .forEach((checkbox) => {
+          checkbox.addEventListener("change", toggleSections);
+        });
+
+      // Inicializar o estado das seções
+      toggleSections();
+
+      // Função para salvar os dados do cabeçalho
+      function salvarDadosCabecalho() {
+        // Salvar dados no localStorage
+        const dadosCabecalho = {
+          orgao: document.getElementById("orgao").value,
+          unidade: document.getElementById("unidade").value,
+          local: document.getElementById("local").value,
+          servico: document.getElementById("servico").value,
+          contrato: document.getElementById("contrato").value,
+          avaliacao: document.getElementById("avaliacao").value,
+          empresa: document.getElementById("empresa").value,
+          cnpj: document.getElementById("cnpj").value,
+          periodo: document.getElementById("periodo").value,
+          fiscal: document.getElementById("fiscal-cabecalho").value,
+          data: document.getElementById("data-cabecalho").value,
+        };
+
+        localStorage.setItem("dadosCabecalho", JSON.stringify(dadosCabecalho));
+        alert("Dados do cabeçalho salvos com sucesso!");
+
+        // Atualizar a página após salvar
+        window.location.reload();
+      }
+
+      // Função para carregar os dados do cabeçalho
+      function carregarDadosCabecalho() {
+        const dadosSalvos = localStorage.getItem("dadosCabecalho");
+        if (dadosSalvos) {
+          const dados = JSON.parse(dadosSalvos);
+          document.getElementById("orgao").value = dados.orgao;
+          document.getElementById("unidade").value = dados.unidade;
+          document.getElementById("local").value = dados.local;
+          document.getElementById("servico").value = dados.servico;
+          document.getElementById("contrato").value = dados.contrato;
+          document.getElementById("avaliacao").value = dados.avaliacao;
+          document.getElementById("empresa").value = dados.empresa;
+          document.getElementById("cnpj").value = dados.cnpj;
+          document.getElementById("periodo").value = dados.periodo;
+          document.getElementById("fiscal-cabecalho").value = dados.fiscal;
+          document.getElementById("data-cabecalho").value = dados.data;
+        }
+      }
+
+      // Adicionar ao DOMContentLoaded
+      document.addEventListener("DOMContentLoaded", function () {
+        definirMesAtual();
+        carregarDadosCabecalho();
+      });
+
+      // Função para adicionar novo item ao checklist
+      function adicionarItemChecklist(categoria) {
+        const section = document.getElementById(`section-${categoria}`);
+        const category = section.querySelector(".checklist-category");
+        const itemCount =
+          category.querySelectorAll(".checklist-item").length + 1;
+
+        const novoItem = document.createElement("div");
+        novoItem.className = "checklist-item";
+        novoItem.innerHTML = `
+        <input type="checkbox" id="doc${categoria}_${itemCount}" name="${categoria}" data-item="${itemCount}">
+        <div class="item-content">
+          <div class="item-number">${itemCount}.</div>
+          <div class="item-description">
+            <input type="text" class="item-text" value="Novo item do checklist">
+          </div>
+          <button type="button" class="comment-btn" onclick="toggleItemComment('doc${categoria}_${itemCount}')">
+            💬 Adicionar Comentário
+          </button>
+        </div>
+      `;
+
+        const commentDiv = document.createElement("div");
+        commentDiv.id = `comment_doc${categoria}_${itemCount}`;
+        commentDiv.className = "item-comment";
+        commentDiv.innerHTML = `
+        <h4>💬 Comentário - Item ${itemCount}</h4>
+        <textarea id="comentario_doc${categoria}_${itemCount}" placeholder="Digite suas observações sobre este item..."></textarea>
+      `;
+
+        category.appendChild(novoItem);
+        category.appendChild(commentDiv);
+
+        // Adicionar evento para salvar o texto do item
+        const textInput = novoItem.querySelector(".item-text");
+        textInput.addEventListener("change", function () {
+          salvarChecklistPersonalizado();
+        });
+      }
+
+      // Função para editar item do checklist
+      function editarItemChecklist(itemId) {
+        const item = document.getElementById(itemId);
+        const description = item.querySelector(".item-description");
+        const currentText = description.textContent.trim();
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = currentText;
+        input.className = "item-text";
+
+        input.addEventListener("blur", function () {
+          description.textContent = this.value;
+          salvarChecklistPersonalizado();
+        });
+
+        description.textContent = "";
+        description.appendChild(input);
+        input.focus();
+      }
+
+      // Função para remover item do checklist
+      function removerItemChecklist(itemId) {
+        const item = document.getElementById(itemId);
+        const comment = document.getElementById(`comment_${itemId}`);
+        if (item && confirm("Tem certeza que deseja remover este item?")) {
+          item.remove();
+          if (comment) comment.remove();
+          salvarChecklistPersonalizado();
+          // Reordenar números dos itens
+          reordenarItensChecklist(itemId.split("_")[0]);
+        }
+      }
+
+      // Função para reordenar os itens do checklist
+      function reordenarItensChecklist(categoria) {
+        const section = document.getElementById(`section-${categoria}`);
+        const items = section.querySelectorAll(".checklist-item");
+        items.forEach((item, index) => {
+          const number = item.querySelector(".item-number");
+          number.textContent = `${index + 1}.`;
+        });
+      }
+
+      // Função para salvar checklist personalizado
+      function salvarChecklistPersonalizado() {
+        const checklistData = {};
+        document.querySelectorAll(".checklist-section").forEach((section) => {
+          const sectionId = section.id.replace("section-", "");
+          checklistData[sectionId] = [];
+
+          section.querySelectorAll(".checklist-item").forEach((item) => {
+            const itemId = item.querySelector('input[type="checkbox"]').id;
+            const description = item
+              .querySelector(".item-description")
+              .textContent.trim();
+            const comment =
+              document.getElementById(`comentario_${itemId}`)?.value || "";
+
+            checklistData[sectionId].push({
+              id: itemId,
+              description: description,
+              comment: comment,
+            });
+          });
+        });
+
+        localStorage.setItem(
+          "checklistPersonalizado",
+          JSON.stringify(checklistData)
+        );
+      }
+
+      // Função para carregar checklist personalizado
+      function carregarChecklistPersonalizado() {
+        const savedData = localStorage.getItem("checklistPersonalizado");
+        if (savedData) {
+          const checklistData = JSON.parse(savedData);
+
+          Object.keys(checklistData).forEach((sectionId) => {
+            const section = document.getElementById(`section-${sectionId}`);
+            if (section) {
+              const category = section.querySelector(".checklist-category");
+              category.innerHTML = ""; // Limpar itens existentes
+
+              checklistData[sectionId].forEach((item) => {
+                const itemCount = item.id.split("_")[1];
+                const novoItem = document.createElement("div");
+                novoItem.className = "checklist-item";
+                novoItem.innerHTML = `
+                  <input type="checkbox" id="${item.id}" name="${sectionId}" data-item="${itemCount}" />
+                  <div class="item-content">
+                    <div class="item-number">${itemCount}.</div>
+                    <div class="item-description">${item.description}</div>
+                    <button type="button" class="comment-btn" onclick="toggleItemComment('${item.id}')">
+                      💬 Adicionar Comentário
+                    </button>
+                  </div>
+                `;
+
+                const commentDiv = document.createElement("div");
+                commentDiv.id = `comment_${item.id}`;
+                commentDiv.className = "item-comment";
+                commentDiv.innerHTML = `
+                  <h4>💬 Comentário - Item ${itemCount}</h4>
+                  <textarea id="comentario_${item.id}" placeholder="Digite suas observações sobre este item...">${item.comment}</textarea>
+                `;
+
+                category.appendChild(novoItem);
+                category.appendChild(commentDiv);
+              });
+            }
+          });
+        }
+      }
+
+      // Modificar a função toggleItemComment para atualizar o estado visual
+      function toggleItemComment(itemId) {
+        const commentDiv = document.getElementById(`comment_${itemId}`);
+        const button = document.querySelector(
+          `[onclick="toggleItemComment('${itemId}')"]`
+        );
+        const item = document.getElementById(itemId).closest(".checklist-item");
+        const textarea = document.getElementById(`comentario_${itemId}`);
+
+        if (commentDiv.classList.contains("show")) {
+          commentDiv.classList.remove("show");
+          button.classList.remove("active");
+          button.textContent = "💬 Adicionar Comentário";
+
+          // Verificar se há texto no comentário
+          if (textarea.value.trim() === "") {
+            item.classList.remove("pendente");
+          }
+        } else {
+          commentDiv.classList.add("show");
+          button.classList.add("active");
+          button.textContent = "💬 Ocultar Comentário";
+
+          // Adicionar classe pendente se houver texto no comentário
+          if (textarea.value.trim() !== "") {
+            item.classList.add("pendente");
+          }
+        }
+
+        // Adicionar evento para monitorar mudanças no comentário
+        textarea.addEventListener("input", function () {
+          if (this.value.trim() !== "") {
+            item.classList.add("pendente");
+          } else {
+            item.classList.remove("pendente");
+          }
+          salvarChecklistPersonalizado();
+        });
+      }
+
+      // Adicionar controles de checklist a cada seção
+      document.querySelectorAll(".checklist-section").forEach((section) => {
+        const sectionId = section.id.replace("section-", "");
+        const controls = document.createElement("div");
+        controls.className = "checklist-controls";
+        controls.innerHTML = `
+        <button class="btn-add" onclick="adicionarItemChecklist('${sectionId}')">
+          <span>➕</span> Adicionar Item
+        </button>
+        <button class="btn-remove" onclick="removerItemChecklist('doc${sectionId}_1')">
+          <span>➖</span> Remover Item
+        </button>
+        <button class="btn-edit" onclick="editarItemChecklist('doc${sectionId}_1')">
+          <span>✏️</span> Editar Item
+        </button>
+      `;
+        section.insertBefore(controls, section.firstChild);
+      });
+
+      // Carregar checklist personalizado ao iniciar
+      document.addEventListener("DOMContentLoaded", function () {
+        definirMesAtual();
+        carregarDadosCabecalho();
+        carregarChecklistPersonalizado();
+      });
+    </script>
+  </body>
+</html>
